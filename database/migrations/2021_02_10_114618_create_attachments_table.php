@@ -14,12 +14,12 @@ class CreateAttachmentsTable extends Migration
     public function up()
     {
         Schema::create('attachments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('email_id');
+            $table->increments('id');
+            $table->unsignedInteger('email_id');
             $table->string('file_link');
             $table->timestamps();
 
-            $table->foreign('email_id')->references('id')->on('emails');
+            $table->foreign('email_id')->references('id')->on('emails')->onDelete('cascade');
         });
     }
 

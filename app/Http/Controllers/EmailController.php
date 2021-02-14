@@ -60,23 +60,6 @@ class EmailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Email $email)
-    {
-        $email->delete();
-
-        return response()->json("email deleted successful $email->id");
-    }
 
     private function validatEmail($request)
     {
