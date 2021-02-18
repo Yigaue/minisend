@@ -20,6 +20,9 @@ class CreateSenderToRecipientsTable extends Migration
             $table->unsignedInteger('recipient_id');
             $table->timestamps();
 
+            $table->tinyInteger('status_id');
+
+            $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('recipient_id')->references('id')->on('recipients');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('email_id')->references('id')->on('emails');

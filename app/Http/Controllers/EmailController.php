@@ -23,7 +23,7 @@ class EmailController extends Controller
 
     public function index()
     {
-        return EmailResource::collection(Email::paginate(10));
+        return EmailResource::collection(Email::get());
     }
 
     /**
@@ -60,6 +60,27 @@ class EmailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function search(Request $request)
+    {
+        $searchQuery = $request->search_term;
+        $searchResult = Email::with(['recipients', 'attachments'])
+            ->where('subject', 'like', '%' . $searchQuery . '%')
+            ->orWhere('alias', 'like', '%' . $searchQuery . '%')
+            ->orWhereHas(
+                'recipients', function ($query) use ($searchQuery) {
+                    $query->where('email', 'like', '%' . $searchQuery . '%');
+                }
+            )->select(
+                'id',
+                'subject',
+                'alias',
+                'text_content',
+                'emails.created_at as formated_date'
+            )->get();
+
+        return response()->json($searchResult);
+    }
 
     private function validatEmail($request)
     {

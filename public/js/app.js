@@ -1993,10 +1993,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      emails: []
+      emails: [],
+      email_id: '',
+      email_url: '',
+      search_term: ''
     };
   },
   created: function created() {
@@ -2013,6 +2019,29 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    setEmailUlr: function setEmailUlr(email_url) {
+      this.email_url = email_url;
+    },
+    getSearchResults: function getSearchResults() {
+      var _this2 = this;
+
+      axios.get('/api/search', {
+        params: {
+          search_term: this.search_term
+        }
+      }).then(function (response) {
+        _this2.emails = response.data;
+      });
+    }
+  },
+  watch: {
+    search_term: function search_term(current, old) {
+      if (current.length >= 4 || old.length >= 4) {
+        this.getSearchResults();
+      } else {
+        this.fetchEmails();
+      }
     }
   }
 });
@@ -38269,70 +38298,111 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search_term,
+              expression: "search_term"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text", value: "", placeholder: "Search mails" },
+          domProps: { value: _vm.search_term },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search_term = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _vm._m(1)
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("table", { staticClass: "table-x" }, [
-          _c("tbody", [
-            _c(
-              "a",
-              { staticClass: "table-link", attrs: { href: "" } },
-              _vm._l(_vm.emails, function(email) {
-                return _c("tr", { key: email.id }, [
-                  _c("hr"),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "entry-x row" }, [
-                    _c("div", { staticClass: "col-md-3 alias" }, [
-                      _vm._m(1, true),
+          _c(
+            "tbody",
+            _vm._l(_vm.emails, function(email) {
+              return _c("div", { key: email.id, staticClass: "email" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "table-link",
+                    attrs: { href: _vm.email_url },
+                    on: {
+                      click: function($event) {
+                        return _vm.setEmailUlr(email.url)
+                      }
+                    }
+                  },
+                  [
+                    _c("tr", [
+                      _c("hr"),
                       _vm._v(" "),
-                      _c("td", { staticClass: "name" }, [
-                        _vm._v(_vm._s(email.alias))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-9" }, [
-                      _c("td", { staticClass: "subject" }, [
-                        _c("b", [_vm._v(_vm._s(email.subject))]),
-                        _vm._v(
-                          " - " +
-                            _vm._s(email.text_content.substring(0, 100)) +
-                            "...\n                                    "
-                        )
+                      _c("div", { staticClass: "entry-x row" }, [
+                        _c("div", { staticClass: "col-md-3 alias" }, [
+                          _vm._m(2, true),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "name" }, [
+                            _vm._v(_vm._s(email.alias))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-9" }, [
+                          _c("td", { staticClass: "subject" }, [
+                            _c("b", [_vm._v(_vm._s(email.subject))]),
+                            _vm._v(
+                              " - " +
+                                _vm._s(email.text_content.substring(0, 100)) +
+                                "...\n                                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "date" }, [
+                            _vm._v(_vm._s(email.formated_date))
+                          ])
+                        ])
                       ]),
                       _vm._v(" "),
-                      _c("td", { staticClass: "date" }, [
-                        _vm._v(_vm._s(email.formated_date))
+                      _c("div", { staticClass: "entry-y row" }, [
+                        _c("div", { staticClass: "col-md-3" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-9" }, [
+                          _c(
+                            "td",
+                            { staticClass: "attachment" },
+                            _vm._l(email.attachments, function(attachment) {
+                              return _c(
+                                "span",
+                                {
+                                  key: attachment.id,
+                                  staticClass: "attachment-item mr-3"
+                                },
+                                [_vm._v(_vm._s(attachment.created_at))]
+                              )
+                            }),
+                            0
+                          )
+                        ])
                       ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "entry-y row" }, [
-                    _c("div", { staticClass: "col-md-3" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-9" }, [
-                      _c(
-                        "td",
-                        { staticClass: "attachment" },
-                        _vm._l(email.attachments, function(attachment) {
-                          return _c(
-                            "span",
-                            {
-                              key: attachment.id,
-                              staticClass: "attachment-item mr-3"
-                            },
-                            [_vm._v(_vm._s(attachment.created_at))]
-                          )
-                        }),
-                        0
-                      )
-                    ])
-                  ])
-                ])
-              }),
-              0
-            )
-          ])
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
       ])
     ])
@@ -38343,20 +38413,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-2" }, [_c("h1", [_vm._v("Emails")])]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "search", value: "", placeholder: "Search mails" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-2" }, [
-        _c("button", { staticClass: "btn btn-primary pull-right" }, [
-          _vm._v("Compose")
-        ])
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("h1", [_vm._v("Emails")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("button", { staticClass: "btn btn-primary pull-right" }, [
+        _vm._v("Compose")
       ])
     ])
   },

@@ -18,7 +18,9 @@ class CreateAttachmentsTable extends Migration
             $table->unsignedInteger('email_id');
             $table->string('file_link');
             $table->timestamps();
+            $table->tinyInteger('status_id');
 
+            $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('email_id')->references('id')->on('emails')->onDelete('cascade');
         });
     }

@@ -20,6 +20,10 @@ class CreateEmailsTable extends Migration
             $table->text('text_content');
             $table->text('html_content');
             $table->timestamps();
+            $table->tinyInteger('status_id');
+
+            $table->foreign('status_id')->references('id')->on('statuses');
+
         });
     }
 

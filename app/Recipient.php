@@ -11,4 +11,9 @@ class Recipient extends Model
     {
         return $this->belongsToMany(User::class, 'sender_recipient', 'user_id');
     }
+
+    public function emails()
+    {
+        return $this->belongsToMany(Email::class, 'sender_recipient');
+    }
 }

@@ -17,6 +17,10 @@ class CreateRecipientsTable extends Migration
             $table->increments('id');
             $table->string('email');
             $table->timestamps();
+
+            $table->tinyInteger('status_id');
+            $table->foreign('status_id')->references('id')->on('statuses');
+
         });
     }
 

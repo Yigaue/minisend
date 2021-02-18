@@ -13,8 +13,8 @@ class Email extends Model
         return $this->hasMany(Attachment::class);
     }
 
-    public function sender()
+    Public function recipients()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(Recipient::class, 'sender_recipient');
     }
 }
