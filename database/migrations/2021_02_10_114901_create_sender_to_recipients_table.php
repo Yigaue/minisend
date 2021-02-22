@@ -15,14 +15,14 @@ class CreateSenderToRecipientsTable extends Migration
     {
         Schema::create('sender_recipient', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('email_id');
-            $table->unsignedInteger('recipient_id');
+            $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->unsignedInteger('email_id')->nullable()->default(null);
+            $table->unsignedInteger('recipient_id')->nullable()->default(null);
             $table->timestamps();
 
-            $table->tinyInteger('status_id');
+            $table->unsignedInteger('status_id')->nullable()->default(null);
 
-            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->foreign('status_id')->references('id')->on('status');
             $table->foreign('recipient_id')->references('id')->on('recipients');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('email_id')->references('id')->on('emails');
@@ -36,6 +36,6 @@ class CreateSenderToRecipientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sender_to_recipients');
+        Schema::dropIfExists('sender_recipient');
     }
 }

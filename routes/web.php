@@ -18,3 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/{any_url}', function () {
+    return view('welcome');
+})->where('any_url', '.*');
+
+Route::get('/view', function () {
+    return view('email');
+});
+

@@ -7,9 +7,9 @@ use Faker\Generator as Faker;
 
 $factory->define(Email::class, function (Faker $faker) {
     return [
+        'from' => $faker->safeEmail,
         'alias' => $faker->name,
         'subject' => $faker->sentence,
-        'text_content' => $faker->paragraph,
-        'html_content' => $faker->randomHtml()
+        'content' => $faker->paragraph
     ];
 });

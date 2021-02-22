@@ -18,8 +18,8 @@ class CreateRecipientsTable extends Migration
             $table->string('email');
             $table->timestamps();
 
-            $table->tinyInteger('status_id');
-            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->unsignedInteger('status_id')->nullable()->default(null);
+            $table->foreign('status_id')->references('id')->on('status');
 
         });
     }

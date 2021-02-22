@@ -8,7 +8,7 @@
                 <input v-model="search_term" class ="form-control" type="text" value="" placeholder="Search mails">
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary pull-right">Compose</button>
+                <router-link to="/emails/create" class="btn btn-primary pull-right">Compose</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -16,8 +16,9 @@
                 <table class="table-x">
                     <tbody>
                         <div class="email" v-for="email in emails" :key="email.id">
-                            <!-- <email-component email=email></email-component> -->
-                            <a :href="email_url" class="table-link" @click="setEmailUlr(email.url)">
+                            <router-link class="table-link"
+                            :to="{ name: 'Email', params: {'id': email.id }}"
+                             @click="setEmailUlr(email.id)">
                                 <tr>
                                 <hr>
                                     <div class="entry-x row">
@@ -26,7 +27,7 @@
                                             <td class="name">{{ email.alias }}</td>
                                         </div>
                                         <div class="col-md-9">
-                                            <td class="subject"><b>{{ email.subject }}</b> - {{ email.text_content.substring(0, 100) }}...
+                                            <td class="subject"><b>{{ email.subject }}</b> - {{ email.content.substring(0, 100) }}...
                                             </td>
                                             <td class="date">{{ email.formated_date }}</td>
                                         </div>
@@ -40,7 +41,7 @@
                                         </div>
                                     </div>
                                 </tr>
-                                </a>
+                            </router-link>
                             </div>
                     </tbody>
                 </table>
@@ -53,6 +54,8 @@
 <style scoped>
 .container {
     margin-top: 5%;
+    padding: 2%;
+    background-color: rgba(245, 245, 245, 0.801);
 }
 a:link {
   text-decoration: none;
@@ -72,6 +75,7 @@ a:link {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 5%;
+    background-color: rgba(255, 255, 255, 0.685);
 }
 
 th, td {
@@ -108,8 +112,8 @@ th, td {
                 })
                 .catch(error => console.log(error))
             },
-            setEmailUlr(email_url) {
-                this.email_url = email_url
+            setEmailUlr(email_id) {
+                this.email_url = `/api/emails/${email_id}`
             },
             getSearchResults() {
                 axios.get('/api/search', {params: {

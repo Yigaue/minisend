@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\EmailController;
 use Illuminate\Http\Request;
 
 /*
@@ -22,3 +21,5 @@ Route::apiResource('emails', 'EmailController');
 Route::apiResource('users', 'UserController');
 
 Route::get('/search', 'EmailController@search')->name('email.search');
+Route::get('/recipients/{recipient}', 'EmailController@recipientEmails');
+

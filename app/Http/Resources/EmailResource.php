@@ -14,17 +14,17 @@ class EmailResource extends JsonResource
      */
     public function toArray($request)
     {
-        $formatedDate = $this->created_at->diffForHumans();
+        $formatedDate = \Carbon\Carbon::parse($this->created_at)->format('d M');
         return [
             'id' => $this->id,
             'alias' => $this->alias,
+            'from' => $this->from,
             'subject' => $this->subject,
-            'text_content' => $this->text_content,
+            'content' => $this->content,
             'formated_date' => $formatedDate,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
             'attachments' => $this->attachments,
-        'url' => route('emails.show', $this->id)
         ];
     }
 }

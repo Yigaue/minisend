@@ -15,12 +15,12 @@ class CreateAttachmentsTable extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('email_id');
+            $table->unsignedInteger('email_id')->nullable()->default(null);
             $table->string('file_link');
             $table->timestamps();
-            $table->tinyInteger('status_id');
+            $table->unsignedInteger('status_id')->nullable()->default(null);
 
-            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->foreign('status_id')->references('id')->on('status');
             $table->foreign('email_id')->references('id')->on('emails')->onDelete('cascade');
         });
     }

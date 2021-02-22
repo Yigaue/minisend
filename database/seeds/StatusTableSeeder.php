@@ -13,7 +13,7 @@ class StatusTableSeeder extends Seeder
      */
     public function run()
     {
-        $names = [
+        $statuses = [
             ['name' => 'sent', 'created_at' => now(), 'updated_at' => now()],
             ['name' =>  'failed', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'posted', 'created_at' => now(), 'updated_at' => now()],
@@ -21,6 +21,6 @@ class StatusTableSeeder extends Seeder
             ['name' => 'deleted', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'pending', 'created_at' => now(), 'updated_at' => now()]
         ];
-        DB::table('statuses')->insert($names);
+        DB::table('status')->insert($statuses);
     }
 }

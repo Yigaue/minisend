@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Email extends Model
 {
-    protected $fillable = ['alias', 'subject', 'text_content', 'html_content'];
+    protected $fillable = ['from', 'alias', 'subject', 'content'];
 
     Public function attachments()
     {
