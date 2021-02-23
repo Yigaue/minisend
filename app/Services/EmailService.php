@@ -139,7 +139,6 @@ class EmailService implements EmailRepository
 
     private function saveAttachment($data, $email)
     {
-        // dd($data);
         if (count($data['file_names'])) {
             foreach ($data['file_names'] as $index => $fileName) {
                 $email->attachments()->create(

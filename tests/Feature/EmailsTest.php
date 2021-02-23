@@ -59,42 +59,6 @@ class EmailsTest extends TestCase
      * @test
      */
 
-    public function can_store_and_send_emails()
-    {
-        factory(Status::class)->create();
-        $response = $this->postJson('/api/v1/emails', [
-            'from' => 'johndoe@example.com',
-            'to' => 'janedoe@example.com',
-            'alias' => 'John Doe',
-            'subject' => 'Dearly Beloved',
-            'content' => 'Dear Jane Joe, I write...',
-            'created_at' => now(),
-            'updated_at' => now()
-            ],
-            [
-                'accept' => 'application/json',
-                'comtent-type' => 'application/json'
-            ]
-        );
-
-        $response = $response->assertStatus(201);
-        $response->assertJson(
-            ["data" => [
-                    "alias"=> 'John Doe',
-                    "from" => 'johndoe@example.com',
-                    "subject" => 'Dearly Beloved',
-                    "content" =>  'Dear Jane Joe, I write...'
-                ],
-            ]
-        );
-
-        $this->assertDatabaseHas('emails', [
-            "alias"=> 'John Doe',
-            "from" => 'johndoe@example.com',
-            "subject" => 'Dearly Beloved',
-            "content" =>  'Dear Jane Joe, I write...'
-        ]);
-    }
 
     /**
      * Undocumented function

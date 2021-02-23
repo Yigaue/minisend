@@ -34,6 +34,7 @@ class EmailController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $files = $request['files'];
 
         $request = json_decode($request['data']);
@@ -83,8 +84,7 @@ class EmailController extends Controller
             'alias' => 'required|string',
             'to' => 'required|email',
             'subject' => 'required|string',
-            'content' => 'required',
-            'email_attachment' => 'file|size|5000'
+            'content' => 'required'
             ]
         );
     }

@@ -24,6 +24,4 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::get('/search', 'EmailController@search')->name('email.search');
     Route::get('/recipients/{recipient}', 'EmailController@recipientEmails');
-
-    Route::post('/emails/file/fileupload', 'EmailController@handleFileUpload');
 });

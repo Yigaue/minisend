@@ -96,7 +96,7 @@ export default {
             this.subject = '',
             this.to = '',
             this.content = '',
-            this.files = ''
+            this.email_attachment = ''
         },
 
         sendMail() {
@@ -132,8 +132,7 @@ export default {
         },
 
         handleFileUpload() {
-            this.email_attachment = this.$refs.file.files;
-            console.log(this.email_attachment);
+            this.email_attachment = this.$refs.file.email_attachment;
         }
     }
 
