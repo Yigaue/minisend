@@ -6,7 +6,7 @@ use App\Email;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Storage;
 
 class SendEmail extends Mailable
 {
@@ -14,14 +14,17 @@ class SendEmail extends Mailable
 
     public $email;
 
+    public $data;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct($email, $data)
     {
         $this->email = $email;
+        $this->data = $data;
     }
 
     /**
@@ -31,8 +34,19 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->from($this->email->from, $this->email->alias)
+        $mail = $this->from($this->email->from, $this->email->alias)
             ->view('email')
             ->with(['email_content' => $this->email->content]);
+
+        foreach ($this->data['file_urls'] as $index => $fileUrl) {
+            $mail->attach(Storage::disk('email_attachment')->path($fileUrl),
+                [
+                    'as' => $this->data['file_names'][$index],
+                    'mime' => $this->data['mimes'][$index]
+                ]
+            );
+        }
+
+        return $mail;
     }
 }

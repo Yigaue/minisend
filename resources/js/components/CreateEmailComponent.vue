@@ -23,7 +23,7 @@
         </div>
         <div class="row mb-4 controls">
             <div class="col-md-6 form-group">
-                <input type="file" class="form-control file" placeholder="file" name="email_attachment" multiple id="file" ref="file" v-on:change="handleFileUpload()" />
+                <input type="file" class="form-control file" placeholder="file" name="attachment" multiple id="file" ref="file" v-on:change="handleFileUpload()" /> <span class="bg-info">Use the shift key to select multiple files</span>
             </div>
              <div class="col-md-6 form-group">
                 <button class="btn btn-primary" @click="sendMail">Send</button>
@@ -88,70 +88,53 @@ export default {
         }
     },
 
-    created () {
-
-    },
-
     methods: {
-        sendMail() {
-             let formData = new FormData();
-            formData.append('file', this.file);
-            console.log('>> formData >> ', formData);
-
-            axios.post('/api/emails',
-            JSON.stringify({
-                'from' : this.from,
-                alias: this.alias,
-                subject: this.subject,
-                'to': this.to,
-                'content': this.content
-            }),
-
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                 }
-            })
-            .then(response =>{
-                console.log(response);
-            });
-
-            this.resetInputs();
-        },
 
         resetInputs() {
             this.from = '',
             this.alias = '',
             this.subject = '',
             this.to = '',
-            this.content = ''
+            this.content = '',
+            this.files = ''
         },
 
-        submitFile() {
+        sendMail() {
             let formData = new FormData();
-            formData.append('file', this.file);
-            console.log('>> formData >> ', formData);
 
-            // You should have a server side REST API
-            axios.post('/api/fileupload',
+            for( var i = 0; i < this.email_attachment.length; i++ ){
+            let file = this.email_attachment[i];
+
+            formData.append('files[' + i + ']', file);
+
+            formData.append('data', JSON.stringify({
+                'from' : this.from,
+                alias: this.alias,
+                subject: this.subject,
+                'to': this.to,
+                'content': this.content
+            } ) );
+}
+            axios.post('/api/v1/emails',
                 formData,
                 {
                     headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }
-        ).then(function () {
-          console.log('SUCCESS!!');
-        })
-        .catch(function () {
-          console.log('FAILURE!!');
-        });
-    },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
-      console.log('>>>> 1st element in files array >>>> ', this.file);
-    }
+            }).then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+            this.resetInputs();
+        },
+
+        handleFileUpload() {
+            this.email_attachment = this.$refs.file.files;
+            console.log(this.email_attachment);
+        }
     }
 
 }

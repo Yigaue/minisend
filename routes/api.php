@@ -17,9 +17,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('emails', 'EmailController');
-Route::apiResource('users', 'UserController');
+Route::group(['prefix' => 'v1'], function() {
 
-Route::get('/search', 'EmailController@search')->name('email.search');
-Route::get('/recipients/{recipient}', 'EmailController@recipientEmails');
+    Route::apiResource('emails', 'EmailController');
+    Route::apiResource('users', 'UserController');
 
+    Route::get('/search', 'EmailController@search')->name('email.search');
+    Route::get('/recipients/{recipient}', 'EmailController@recipientEmails');
+
+    Route::post('/emails/file/fileupload', 'EmailController@handleFileUpload');
+});

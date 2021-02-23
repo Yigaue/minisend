@@ -36,7 +36,7 @@
                                         <div class="col-md-3"></div>
                                         <div class="col-md-9">
                                             <td class="attachment">
-                                                <span v-for="attachment in email.attachments" :key="attachment.id" class="attachment-item mr-3">{{ attachment.created_at }}</span>
+                                                <span v-for="attachment in email.attachments" :key="attachment.id" class="attachment-item mr-3">{{ attachment.file_name }}</span>
                                             </td>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@ th, td {
         },
         methods: {
             fetchEmails () {
-                fetch('/api/emails')
+                fetch('/api/v1/emails')
                 .then(response => response.json())
                 .then(response => {
                     this.emails = response.data
@@ -113,10 +113,10 @@ th, td {
                 .catch(error => console.log(error))
             },
             setEmailUlr(email_id) {
-                this.email_url = `/api/emails/${email_id}`
+                this.email_url = `/emails/${email_id}`
             },
             getSearchResults() {
-                axios.get('/api/search', {params: {
+                axios.get('/api/v1/search', {params: {
                     search_term: this.search_term }}
                 )
                 .then(response => {

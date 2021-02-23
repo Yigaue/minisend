@@ -1,7 +1,7 @@
 <?php
 
-use App\Attachment;
-use App\Email;
+use App\Models\Attachment;
+use App\Models\Email;
 use Illuminate\Database\Seeder;
 
 class EmailTableSeeder extends Seeder

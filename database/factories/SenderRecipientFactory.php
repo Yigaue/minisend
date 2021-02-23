@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Email;
-use App\Recipient;
-use App\SenderRecipient;
-use App\User;
+use App\Models\Email;
+use App\Models\Recipient;
+use App\Models\SenderRecipient;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 $factory->define(SenderRecipient::class, function (Faker $faker) {

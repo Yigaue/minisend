@@ -2,8 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Attachment;
-use App\Email;
+use App\Models\Attachment;
+use App\Models\Email;
 use Faker\Generator as Faker;
 
 $factory->define(
@@ -13,7 +13,8 @@ $factory->define(
                 return factory(Email::class)->create()->id;
             },
 
-            'file_link' => $faker->url
+            'file_url' => $faker->url,
+            'file_name' => $faker->name
         ];
     }
 );

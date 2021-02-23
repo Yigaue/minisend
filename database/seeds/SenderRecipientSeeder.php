@@ -1,6 +1,6 @@
 <?php
 
-use App\SenderRecipient;
+use App\Models\SenderRecipient;
 use Illuminate\Database\Seeder;
 
 class SenderRecipientSeeder extends Seeder

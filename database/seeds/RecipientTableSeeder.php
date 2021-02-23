@@ -11,6 +11,6 @@ class RecipientTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Recipient::class, 20)->create();
+        factory(App\Models\Recipient::class, 20)->create();
     }
 }

@@ -24,7 +24,7 @@ class EmailResource extends JsonResource
             'formated_date' => $formatedDate,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
-            'attachments' => $this->attachments,
+            'attachments' => $this->attachments
         ];
     }
 }

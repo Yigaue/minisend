@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Email;
-use App\Status;
+use App\Models\Email;
+use App\Models\Status;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,7 +19,7 @@ class EmailsTest extends TestCase
     public function it_returns_emails_resource()
     {
         factory(Email::class, 2)->create();
-        $response = $this->getJson('/api/emails', [
+        $response = $this->getJson('/api/v1/emails', [
             'accept' => 'application/json',
             'Content-Type' => 'application/json'
         ]);
@@ -34,7 +34,7 @@ class EmailsTest extends TestCase
     public function it_returns_a_email_resource()
     {
         $email = factory(Email::class)->create();
-        $response = $this->getJson("/api/emails/$email->id", [
+        $response = $this->getJson("/api/v1/emails/$email->id", [
             'accept' => 'application/json',
             'content-type' => 'application/json'
         ]);
@@ -62,7 +62,7 @@ class EmailsTest extends TestCase
     public function can_store_and_send_emails()
     {
         factory(Status::class)->create();
-        $response = $this->postJson('/api/emails', [
+        $response = $this->postJson('/api/v1/emails', [
             'from' => 'johndoe@example.com',
             'to' => 'janedoe@example.com',
             'alias' => 'John Doe',
@@ -103,7 +103,7 @@ class EmailsTest extends TestCase
      */
     public function that_we_can_see_the_compose_email_page()
     {
-        $this->getJson('/emails/create')->assertStatus(200)
+        $this->getJson('/emails/v1/create')->assertStatus(200)
             ->assertSee('to');
     }
 
@@ -117,7 +117,7 @@ class EmailsTest extends TestCase
         factory(Status::class)->create(['id' => 5]);
         $email = factory(Email::class)->create();
         $this->assertNotEquals($email->status_id, Status::DELETED);
-        $response =  $this->deleteJson("/api/emails/$email->id")->assertStatus(200);
+        $response =  $this->deleteJson("/api/v1/emails/$email->id")->assertStatus(200);
         $this->assertEquals('"Email deleted successfully"', $response->getContent());
         $email = $email->fresh();
         $this->assertEquals($email->status_id, Status::DELETED);

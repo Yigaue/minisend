@@ -28,9 +28,8 @@
               <ul class="mailbox-attachments clearfix">
                 <li v-for="attachment in attachments" :key="attachment.id">
                   <span class="mailbox-attachment-icon"></span>
-
                   <div class="mailbox-attachment-info">
-                    <a href="#" class="mailbox-attachment-name"> {{ attachment.file_link }}</a>
+                    <a :href="file_url" class="mailbox-attachment-name" @click="setFileUrl(attachment.file_url)"> {{ attachment.file_name }}</a>
                   </div>
                 </li>
 
@@ -55,7 +54,8 @@ export default {
         return {
             email: {},
             email_id : this.id,
-            attachments : []
+            attachments : [],
+            file_url: ''
         }
     },
 
@@ -65,17 +65,20 @@ export default {
 
     methods: {
         fetchEmail(id) {
-            axios.get(`/api/emails/${id}`)
+            axios.get(`/api/v1/emails/${id}`)
             .then(response => {
                 this.email = response.data.data;
                 this.attachments = response.data.data.attachments;
             })
         },
         deleteEmail(id) {
-            axios.delete(`/api/emails/${id}`).
+            axios.delete(`/api/v1/emails/${id}`).
             then(response => {
                 console.log(response);
             })
+        },
+        setFileUrl(file_name) {
+            this.file_url = `/storage/email_attachment/${file_name}`
         }
     }
 }

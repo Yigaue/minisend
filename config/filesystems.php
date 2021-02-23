@@ -64,6 +64,19 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'email_attachment' => (
+            env('APP_ENV') == 'production' ?
+                [
+                    // Production variables
+                ] :
+                [
+                    'driver' => 'local',
+                    'root' => storage_path('app/public/email_attachment'),
+                    'url' => env('APP_URL').'/storage/email_attachment',
+                    'visibility' => 'public',
+                ]
+        ) ,
+
     ],
 
 ];
