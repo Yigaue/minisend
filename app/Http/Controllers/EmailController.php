@@ -6,6 +6,7 @@ use App\Models\Email;
 use App\Models\Recipient;
 use App\Repositories\EmailRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmailController extends Controller
 {
@@ -29,17 +30,16 @@ class EmailController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        // dd($request);
         $files = $request['files'];
 
         $request = json_decode($request['data']);
 
-        $request  = new \Illuminate\Http\Request((array) $request);
+        $request = new \Illuminate\Http\Request((array) $request);
 
         $this->validatEmail($request);
 
@@ -49,7 +49,7 @@ class EmailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Email $email)
@@ -79,12 +79,11 @@ class EmailController extends Controller
     private function validatEmail($request)
     {
         $this->validate(
-            $request, [
-            'from' => 'required|email',
-            'alias' => 'required|string',
-            'to' => 'required|email',
-            'subject' => 'required|string',
-            'content' => 'required'
+            $request,
+            [
+                'to' => 'required|email',
+                'subject' => 'required|string',
+                'content' => 'required',
             ]
         );
     }

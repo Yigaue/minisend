@@ -19,7 +19,7 @@ class EmailService implements EmailRepository
     public function index()
     {
         return EmailResource::collection(
-            Email::whereNotIn('status_id',  [Status::DELETED])
+            Email::whereNotIn('status_id', [Status::DELETED])
                 ->orWhere('status_id', null)->latest()->get()
         );
     }
@@ -30,7 +30,7 @@ class EmailService implements EmailRepository
         $files = $data['files'];
         $email = $this->saveEmail($request);
         $this->saveRecipient($request, $email);
-        $fileName  = $this->storeAttachment($files, $email);
+        $fileName = $this->storeAttachment($files, $email);
         $data = $this->saveAttachment($fileName, $email);
         $this->sendMail($request, $email, $data);
 
@@ -62,18 +62,20 @@ class EmailService implements EmailRepository
 
         $searchResult = Email::with(['recipients', 'attachments'])
             ->where('subject', 'like', '%' . $searchQuery . '%')
-            ->orWhere('alias', 'like', '%' . $searchQuery . '%')
-            ->orWhere('from', 'like', '%' . $searchQuery . '%')
+            ->orWhere('name', 'like', '%' . $searchQuery . '%')
+            ->orWhere('email', 'like', '%' . $searchQuery . '%')
+            ->join('users', 'users.id', '=', 'emails.user_id')
             ->orWhereHas(
-                'recipients', function ($query) use ($searchQuery) {
+                'recipients',
+                function ($query) use ($searchQuery) {
                     $query->where('email', 'like', '%' . $searchQuery . '%');
                 }
             )->select(
-                'from',
-                'id',
-                'subject',
-                'alias',
-                'content',
+                'emails.id',
+                'users.email',
+                'users.name',
+                'emails.subject',
+                'emails.content',
                 'emails.created_at as formated_date'
             )->get();
 
@@ -89,8 +91,9 @@ class EmailService implements EmailRepository
         $email->status_id = Status::DELETED;
         $email->save();
 
-        return ['status' => 'success',
-            'message' => 'Email deleted successfully'
+        return [
+            'status' => 'success',
+            'message' => 'Email deleted successfully',
         ];
     }
 
@@ -100,26 +103,17 @@ class EmailService implements EmailRepository
             ['email' => $request->to]
         );
 
-        $user = User::updateOrCreate(
-            [
-                'name' => $request->alias,
-                'email' => $request->from,
-                'password' => bcrypt("password" . rand(1, 1000))
-            ]
-        );
-
         SenderRecipient::create(
             [
-                'user_id' => $user->id,
                 'email_id' => $email->id,
-                'recipient_id' => $recipient->id
+                'recipient_id' => $recipient->id,
             ]
         );
     }
 
     private function sendMail($request, $email, $data)
     {
-        $user = ['email' => $request->to, 'name' => $request->alias];
+        $user = ['email' => $request->to, 'name' => $email->user->name];
         Mail::to((object) $user)->send(new SendEmail($email, $data));
     }
 
@@ -127,10 +121,8 @@ class EmailService implements EmailRepository
     {
         $email = Email::create(
             [
-                'from' => $request->from,
-                'alias' => $request->alias,
                 'subject' => $request->subject,
-                'content' => $request->content
+                'content' => $request->content,
             ]
         );
 
@@ -142,8 +134,9 @@ class EmailService implements EmailRepository
         if (count($data['file_names'])) {
             foreach ($data['file_names'] as $index => $fileName) {
                 $email->attachments()->create(
-                    ['file_url' => $data['file_urls'][$index],
-                        'file_name' => $fileName
+                    [
+                        'file_url' => $data['file_urls'][$index],
+                        'file_name' => $fileName,
                     ]
                 );
             }
@@ -154,12 +147,12 @@ class EmailService implements EmailRepository
 
     private function storeAttachment($files, $email)
     {
-        $data  = [];
+        $data = [];
         foreach ($files as $file) {
             $fileExtension = $file->getClientOriginalExtension();
             $fileName = $file->getClientOriginalName();
-            $mimeType  = $file->getMimeType();
-            $fileUrl = now()->format('YmdHis'). '_' . $email->id . '_'. 'email_attachment'.'.'.$fileExtension;
+            $mimeType = $file->getMimeType();
+            $fileUrl = now()->format('YmdHis') . '_' . $email->id . '_' . 'email_attachment' . '.' . $fileExtension;
             $upload = Storage::disk('email_attachment')->put($fileUrl, file_get_contents($file));
 
             if (!$upload) {

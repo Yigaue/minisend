@@ -13,25 +13,25 @@ Vue.use(vueRouter);
 
 const routes = [
     {
-        path: '',
+        path: '/emails',
         component: EmailsComponent,
         name: 'Emails',
         props: true
     },
 
     {
-        path: '/api/emails/:id',
+        path: '/emails/:id',
         component: EmailComponent,
         name: 'Email',
         props: true,
     },
 
     {
-        path: '/emails/create',
+        path: '/create/email',
         component: CreateEmailComponent,
         name: 'Create',
         props: true
-    },
+    }
 ];
 
 export default new VueRouter({

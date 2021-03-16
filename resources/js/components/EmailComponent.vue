@@ -8,7 +8,7 @@
               <div class="row">
                    <div class="col-md-8">
                         <h3>{{ email.subject }}</h3>
-                        <h5>From: <b>{{ email.alias }}</b>  {{ email.from }}</h5>
+                        <h5>From: <b>{{ email.user.name }}</b>  {{ email.user.email }}</h5>
                     </div>
                     <div class="col-md-4">
                         <span class="mailbox-read-time pull-right"> {{ email.created_at }} </span></h5>
@@ -65,10 +65,16 @@ export default {
 
     methods: {
         fetchEmail(id) {
-            axios.get(`/api/v1/emails/${id}`)
+            axios.get(`/api/v1/emails/${id}`, '',
+
+                {'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer '}
+            )
             .then(response => {
                 this.email = response.data.data;
                 this.attachments = response.data.data.attachments;
+               console.log(response)
             })
         },
         deleteEmail(id) {

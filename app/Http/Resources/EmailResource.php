@@ -17,8 +17,6 @@ class EmailResource extends JsonResource
         $formatedDate = \Carbon\Carbon::parse($this->created_at)->format('d M');
         return [
             'id' => $this->id,
-            'alias' => $this->alias,
-            'from' => $this->from,
             'subject' => $this->subject,
             'content' => $this->content,
             'formated_date' => $formatedDate,

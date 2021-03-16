@@ -34,15 +34,16 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        $mail = $this->from($this->email->from, $this->email->alias)
+        $mail = $this->from($this->email->user->email, $this->email->user->name)
             ->view('email')
             ->with(['email_content' => $this->email->content]);
 
         foreach ($this->data['file_urls'] as $index => $fileUrl) {
-            $mail->attach(Storage::disk('email_attachment')->path($fileUrl),
+            $mail->attach(
+                Storage::disk('email_attachment')->path($fileUrl),
                 [
                     'as' => $this->data['file_names'][$index],
-                    'mime' => $this->data['mimes'][$index]
+                    'mime' => $this->data['mimes'][$index],
                 ]
             );
         }

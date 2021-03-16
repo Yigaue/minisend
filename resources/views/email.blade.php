@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            <p>{{$email_content}}</p>
+            <p>{{ $email_content }}</p>
         </div>
     </body>
 </html>

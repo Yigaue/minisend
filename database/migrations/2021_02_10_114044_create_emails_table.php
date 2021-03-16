@@ -15,14 +15,14 @@ class CreateEmailsTable extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('from');
+            $table->unsignedInteger('user_id');
             $table->string('subject');
-            $table->string('alias');
             $table->text('content');
             $table->timestamps();
             $table->unsignedInteger('status_id')->nullable()->default(null);
 
             $table->foreign('status_id')->references('id')->on('status');
+            $table->foreign('user_id')->references('id')->on('users');
 
         });
     }

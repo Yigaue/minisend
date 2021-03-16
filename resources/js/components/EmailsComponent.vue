@@ -8,7 +8,7 @@
                 <input v-model="search_term" class ="form-control" type="text" value="" placeholder="Search mails">
             </div>
             <div class="col-md-2">
-                <router-link to="/emails/create" class="btn btn-primary pull-right">Compose</router-link>
+                <router-link to="/create/email" class="btn btn-primary pull-right">Compose</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -121,6 +121,7 @@ th, td {
                 )
                 .then(response => {
                     this.emails = response.data
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}` 
                 })
             }
         },

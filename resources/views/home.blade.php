@@ -14,7 +14,10 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <passport-clients></passport-clients>
+                    <authorized-clients></authorized-clients>
+                    <personal-access-tokens></personal-access-tokens>
+
                 </div>
             </div>
         </div>
