@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1'], function() {
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 
     Route::apiResource('emails', 'EmailController');
     Route::apiResource('users', 'UserController');
@@ -25,3 +25,9 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('/search', 'EmailController@search')->name('email.search');
     Route::get('/recipients/{recipient}', 'EmailController@recipientEmails');
 });
+
+Route::post('register', 'Auth\RegisterController@registration');
+
+Route::post('login', 'Auth\LoginController@login');
+
+Route::post('logout', 'Auth\LoginController@logout');

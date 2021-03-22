@@ -97,7 +97,8 @@ th, td {
                 emails: [],
                 email_id: '',
                 email_url: '',
-                search_term: ''
+                search_term: '',
+                token: ''
             }
         },
         created() {
@@ -105,7 +106,13 @@ th, td {
         },
         methods: {
             fetchEmails () {
-                fetch('/api/v1/emails')
+                fetch('/api/v1/emails', {
+                headers: {
+                    'Authorization': `Bearer 0PIXVaITcsqMmCzrLSDdalpU2RSvu75wJlsshJmZW5jXN4d7qyupgMWMoBII`,
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                })
                 .then(response => response.json())
                 .then(response => {
                     this.emails = response.data
@@ -121,6 +128,7 @@ th, td {
                 )
                 .then(response => {
                     this.emails = response.data
+                    console.log(this.emails)
                 })
             }
         },

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -45,5 +46,13 @@ class User extends Authenticatable
     public function email()
     {
         return $this->hasMany(Email::class);
+    }
+
+    public function generateToken()
+    {
+        $this->token = str::random(60);
+        $this->save();
+
+        return $this->token;
     }
 }

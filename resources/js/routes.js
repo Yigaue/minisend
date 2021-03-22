@@ -7,6 +7,10 @@ import EmailComponent from './components/EmailComponent.vue';
 
 import CreateEmailComponent from './components/CreateEmailComponent.vue';
 
+import LoginComponent from './components/LoginComponent.vue';
+
+import RegisterComponent from './components/RegisterComponent.vue';
+
 import vueRouter from 'vue-router';
 
 Vue.use(vueRouter);
@@ -32,10 +36,24 @@ const routes = [
         name: 'Create',
         props: true
     },
+
+    {
+        path: '/login',
+        component: LoginComponent,
+        name: 'Register',
+        props: true
+    },
+
+    {
+        path: '/register',
+        component: RegisterComponent,
+        name: 'Login',
+        props: true
+    },
 ];
 
 export default new VueRouter({
-    routes: routes,
+    routes,
     mode: 'history'
 })
 
