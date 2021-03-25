@@ -21,7 +21,7 @@
 
                             <div class="form-group row mb-2">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">Login</button>
+                                    <button type="submit" class="btn btn-primary" >Login</button>
                                 </div>
                             </div>
                         </form>
@@ -42,6 +42,7 @@
 
 <script>
 export default {
+  name: 'Login',
   data () {
     return {
       email: '',
@@ -49,20 +50,20 @@ export default {
     }
   },
 
-//   methods: {
-//     login () {
-    //   this.$store
-    //     .dispatch('login', {
-    //       email: this.email,
-    //       password: this.password
-    //     })
-    //     .then(() => {
-    //       this.$router.push({ name: 'About' })
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //     })
-    // }
-//   }
+  methods: {
+    login () {
+      this.$store
+        .dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          this.$router.push({ name: 'Home' })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
 }
 </script>

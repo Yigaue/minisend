@@ -34,7 +34,7 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        $mail = $this->from($this->email->from, $this->email->alias)
+        $mail = $this->from($this->email->user->email, $this->email->user->name)
             ->view('email')
             ->with(['email_content' => $this->email->content]);
 

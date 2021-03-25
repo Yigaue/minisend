@@ -19,8 +19,6 @@ class EmailResource extends JsonResource
         $user  = Auth::guard('api')->user();
         return [
             'id' => $this->id,
-            'alias' => $this->alias,
-            'from' => $this->from,
             'subject' => $this->subject,
             'content' => $this->content,
             'formated_date' => $formatedDate,

@@ -3,6 +3,8 @@ import Vue from 'vue';
 
 import router from './routes';
 
+import store from './store'
+
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue';
 
 Vue.use(BootstrapVue);
@@ -21,5 +23,17 @@ const app = new Vue({
         EmailComponent,
         CreateEmailComponent
     },
-    router
+    router,
+    store,
+
+    created () {
+        const user = localStorage.getItem('user')
+        if (user) {
+          const userData = JSON.parse(user)
+          this.$store.commit('setAccessToken', userData)
+        }
+        axios.interceptors.response.use(
+          response => response,
+        )
+      },
 });

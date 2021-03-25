@@ -8,7 +8,7 @@
                 <input v-model="search_term" class ="form-control" type="text" value="" placeholder="Search mails">
             </div>
             <div class="col-md-2">
-                <router-link to="/emails/create" class="btn btn-primary pull-right">Compose</router-link>
+                <router-link :to="{ name: 'Create'}" class="btn btn-primary pull-right">Compose</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -102,13 +102,19 @@ th, td {
             }
         },
         created() {
+            const user = localStorage.getItem('user')
+            if (user) {
+               const userData = JSON.parse(user)
+               this.$store.commit('setAccessToken', userData)
+               this.token = userData.data.token
+            }
             this.fetchEmails();
         },
         methods: {
             fetchEmails () {
                 fetch('/api/v1/emails', {
                 headers: {
-                    'Authorization': `Bearer 0PIXVaITcsqMmCzrLSDdalpU2RSvu75wJlsshJmZW5jXN4d7qyupgMWMoBII`,
+                    'Authorization': `Bearer ${this.token}`,
                     'accept': 'application/json',
                     'content-type': 'application/json'
                 },
@@ -116,6 +122,7 @@ th, td {
                 .then(response => response.json())
                 .then(response => {
                     this.emails = response.data
+
                 })
                 .catch(error => console.log(error))
             },

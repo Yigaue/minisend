@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Email extends Model
 {
-    protected $fillable = ['from', 'alias', 'subject', 'content'];
+    protected $fillable = ['user_id', 'subject', 'content'];
 
     Public function attachments()
     {
@@ -16,5 +16,10 @@ class Email extends Model
     Public function recipients()
     {
         return $this->belongsToMany(Recipient::class, 'sender_recipient');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

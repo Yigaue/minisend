@@ -74,7 +74,9 @@ export default {
         deleteEmail(id) {
             axios.delete(`/api/v1/emails/${id}`).
             then(response => {
-                console.log(response);
+                if (response.status == '200') {
+                    this.$router.push({ name: 'Home' });
+                }
             })
         },
         setFileUrl(file_name) {

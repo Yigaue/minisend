@@ -34,7 +34,7 @@ class EmailController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+
         $files = $request['files'];
 
         $request = json_decode($request['data']);
@@ -80,8 +80,6 @@ class EmailController extends Controller
     {
         $this->validate(
             $request, [
-            'from' => 'required|email',
-            'alias' => 'required|string',
             'to' => 'required|email',
             'subject' => 'required|string',
             'content' => 'required'

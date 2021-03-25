@@ -19,35 +19,45 @@ const routes = [
     {
         path: '',
         component: EmailsComponent,
-        name: 'Emails',
-        props: true
+        name: 'Home',
+        props: true,
+        meta: {
+            auth: true
+        },
     },
 
     {
-        path: '/api/emails/:id',
+        path: '/emails',
+        component: EmailsComponent,
+        name: 'Emails',
+        props: true,
+    },
+
+    {
+        path: '/emails/:id',
         component: EmailComponent,
         name: 'Email',
         props: true,
     },
 
     {
-        path: '/emails/create',
+        path: '/create',
         component: CreateEmailComponent,
         name: 'Create',
-        props: true
+        props: true,
     },
 
     {
         path: '/login',
         component: LoginComponent,
-        name: 'Register',
+        name: 'Login',
         props: true
     },
 
     {
         path: '/register',
         component: RegisterComponent,
-        name: 'Login',
+        name: 'Register',
         props: true
     },
 ];

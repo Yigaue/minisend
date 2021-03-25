@@ -15,7 +15,6 @@ class CreateSenderToRecipientsTable extends Migration
     {
         Schema::create('sender_recipient', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->unsignedInteger('email_id')->nullable()->default(null);
             $table->unsignedInteger('recipient_id')->nullable()->default(null);
             $table->timestamps();
@@ -24,7 +23,6 @@ class CreateSenderToRecipientsTable extends Migration
 
             $table->foreign('status_id')->references('id')->on('status');
             $table->foreign('recipient_id')->references('id')->on('recipients');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('email_id')->references('id')->on('emails');
         });
     }

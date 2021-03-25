@@ -5,11 +5,11 @@
                 <div class="card">
                     <div class="card-header">Register</div>
                     <div class="card-body">
-                        <form @submit.prevent="login">
+                        <form @submit.prevent="register">
                             <div class="form-group row mt-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                                 <div class="col-md-6">
-                                    <input type="email" name="email" v-model="email" class="form-control">
+                                    <input type="text" name="name" v-model="name" class="form-control">
                                 </div>
                             </div>
 
@@ -23,14 +23,14 @@
                             <div class="form-group row mt-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Password</label>
                                 <div class="col-md-6">
-                                    <input type="email" name="email" v-model="email" class="form-control">
+                                    <input type="password" name="password" v-model="password" class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group row mt-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
                                 <div class="col-md-6">
-                                    <input type="email" name="email" v-model="email" class="form-control">
+                                    <input type="password" name="password_confirmation" v-model="password_confirmation" class="form-control">
                                 </div>
                             </div>
 
@@ -52,5 +52,35 @@
     margin-top: 1%;
     padding: 2%;
 }
-
 </style>
+
+<script>
+export default {
+  data () {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: ''
+    }
+  },
+
+  methods: {
+    register () {
+      this.$store
+        .dispatch('register', {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password_confirmation
+        })
+        .then(() => {
+          this.$router.push({ name: 'Login' })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+}
+</script>
